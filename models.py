@@ -15,6 +15,8 @@ def CORAL(source, target):
 
     # source covariance
     xm = torch.mean(source, 0, keepdim=True) - source
+    # @ = np.dot
+    # t() = 矩阵转置
     xc = xm.t() @ xm
 
     # target covariance
@@ -38,11 +40,13 @@ class DeepCORAL(nn.Module):
         self.fc.weight.data.normal_(0, 0.005)
 
     def forward(self, source, target):
+        # sharedNet = AlexNet
         source = self.sharedNet(source)
         source = self.fc(source)
 
         target = self.sharedNet(target)
         target = self.fc(target)
+        # source, target -> num_class
         return source, target
 
 
